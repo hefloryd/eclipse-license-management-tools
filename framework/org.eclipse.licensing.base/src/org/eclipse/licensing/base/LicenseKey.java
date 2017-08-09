@@ -58,8 +58,8 @@ public class LicenseKey {
 	public LicenseKey(File file) {
 		this.file = file;
 		properties = new Properties();
-		try {
-			properties.load(new FileInputStream(file));
+		try (FileInputStream stream = new FileInputStream(file)) {
+			properties.load(stream);
 		} catch (IOException e) {
 			// TODO set in invalid status
 			e.printStackTrace();
