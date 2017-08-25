@@ -36,6 +36,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.licensing.base.LicenseKey;
 import org.eclipse.licensing.base.LicensingUtils;
+import org.eclipse.licensing.core.ILicenseRequestHandler;
 import org.eclipse.licensing.core.ILicensedProduct;
 import org.eclipse.licensing.core.LicensedProducts;
 import org.eclipse.licensing.ui.LicensingUI;
@@ -60,6 +61,7 @@ public class LicensesPreferencePage extends PreferencePage implements
 	private TreeViewer tree;
 	private Button removeButton;
 	private Button detailsButton;
+	private Button requestButton;
 
 	@Override
 	public void init(IWorkbench workbench) {
@@ -185,6 +187,7 @@ public class LicensesPreferencePage extends PreferencePage implements
 				removeButton.setEnabled(element != null
 						&& element instanceof LicenseKey);
 				detailsButton.setEnabled(element != null);
+				requestButton.setEnabled(element != null && element instanceof ILicenseRequestHandler);
 			}
 		});
 		refreshTable();
@@ -280,6 +283,7 @@ public class LicensesPreferencePage extends PreferencePage implements
 
 				refreshTable();
 			}
+
 		});
 
 		detailsButton = new Button(composite, SWT.PUSH);
@@ -312,6 +316,34 @@ public class LicensesPreferencePage extends PreferencePage implements
 				MessageDialog.openInformation(getShell(), "Details", info);
 			}
 		});
+
+		requestButton = new Button(composite, SWT.PUSH);
+		requestButton.setLayoutData(new GridData(SWT.FILL, SWT.NONE, false, false));
+		requestButton.setText("&Request...");
+		requestButton.setEnabled(false);
+		requestButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ISelection selection = tree.getSelection();
+				if (selection.isEmpty())
+					return;
+
+				if (!(selection instanceof IStructuredSelection))
+					return;
+
+				IStructuredSelection ssel = (IStructuredSelection) selection;
+				Object element = ssel.getFirstElement();
+				if (element == null)
+					return;
+
+				if (element instanceof ILicenseRequestHandler) {
+					ILicenseRequestHandler handler = (ILicenseRequestHandler) element;
+					handler.handleLicenseRequest();
+				}
+
+			}
+		});
+
 	}
 
 	private String getAsString(ILicensedProduct product) {
