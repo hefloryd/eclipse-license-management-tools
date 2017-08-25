@@ -13,14 +13,6 @@
     <tycho.extras.version>${tycho.version}</tycho.extras.version>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>luna</id>
-      <layout>p2</layout>
-     <url>http://download.eclipse.org/releases/luna/201502271000/</url>
-    </repository>
-  </repositories>
-
   <build>
     <plugins>
       <plugin>
@@ -28,6 +20,21 @@
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho.version}</version>
         <extensions>true</extensions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <target>
+            <artifact>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>org.eclipse.licensing.target</artifactId>
+              <version>${project.version}</version>
+            </artifact>
+          </target>
+        </configuration>
       </plugin>
 
       <!-- enable source feature generation -->
@@ -81,6 +88,7 @@
   </build>
 
   <modules>
+    <module>org.eclipse.licensing.target</module>
     <module>org.eclipse.licensing.base</module>
     <module>org.eclipse.licensing.core</module>
     <module>org.eclipse.licensing.ui</module>
