@@ -210,6 +210,10 @@ public class LicensesPreferencePage extends PreferencePage implements
 				FileDialog dialog = new FileDialog(parent.getShell());
 				dialog.setText("Select License Key File");
 				String filePath = dialog.open();
+				if (filePath == null) {
+					// user cancelled
+					return;
+				}
 
 				// check if license file is valid
 				LicenseKey licenseKey = new LicenseKey(filePath);
