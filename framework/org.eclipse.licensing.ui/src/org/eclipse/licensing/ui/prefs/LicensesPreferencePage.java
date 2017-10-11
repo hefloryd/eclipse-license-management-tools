@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -315,34 +316,60 @@ public class LicensesPreferencePage extends PreferencePage implements
 
 	private String getAsString(ILicensedProduct product) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Id: ").append(product.getId()).append('\n');
-		builder.append("Name: ").append(product.getName()).append('\n');
-		builder.append("Vendor: ").append(product.getVendor()).append('\n');
-		builder.append("Version: ").append(product.getVersion()).append('\n');
+		UUID id = product.getId();
+		String name = product.getName();
+		String vendor = product.getVendor();
+		String version = product.getVersion();
+
+		if (id != null)
+			builder.append("Id: ").append(id).append('\n');
+		if (name != null)
+			builder.append("Name: ").append(name).append('\n');
+		if (vendor != null)
+			builder.append("Vendor: ").append(vendor).append('\n');
+		if (version != null)
+			builder.append("Version: ").append(version).append('\n');
+
 		return builder.toString();
 	}
 
 	private String getAsString(LicenseKey licenseKey) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Id: ").append(licenseKey.getId()).append('\n');
-		builder.append("Issuer: ").append(licenseKey.getIssuer()).append('\n');
-		builder.append("Type: ").append(licenseKey.getType()).append('\n');
-		builder.append("Expiraton Date: ")
-				.append(licenseKey.getExpirationDate()).append('\n');
-		builder.append("Product Id: ").append(licenseKey.getProductId())
-				.append('\n');
-		builder.append("Product Name: ").append(licenseKey.getProductName())
-				.append('\n');
-		builder.append("Product Vendor: ")
-				.append(licenseKey.getProductVendor()).append('\n');
-		builder.append("Product Versions: ")
-				.append(licenseKey.getProductVersions()).append('\n');
-		builder.append("Customer Id: ").append(licenseKey.getCustomerId())
-				.append('\n');
-		builder.append("Customer Name: ").append(licenseKey.getCustomerName())
-				.append('\n');
-		builder.append("Signature: ").append(licenseKey.getSignatureAsString())
-				.append('\n');
+		String id = licenseKey.getId();
+		String issuer = licenseKey.getIssuer();
+		String type = licenseKey.getType();
+		String expirationDate = licenseKey.getExpirationDate();
+		UUID productId = licenseKey.getProductId();
+		String productName = licenseKey.getProductName();
+		String productVendor = licenseKey.getProductVendor();
+		VersionRange productVersions = licenseKey.getProductVersions();
+		String customerId = licenseKey.getCustomerId();
+		String customerName = licenseKey.getCustomerName();
+		String signatureAsString = licenseKey.getSignatureAsString();
+
+		if (id != null)
+			builder.append("Id: ").append(id).append('\n');
+		if (issuer != null)
+			builder.append("Issuer: ").append(issuer).append('\n');
+		if (type != null)
+			builder.append("Type: ").append(type).append('\n');
+		if (expirationDate != null)
+			builder.append("Expiraton Date: ").append(expirationDate).append('\n');
+		if (productId != null)
+			builder.append("Product Id: ").append(productId).append('\n');
+		if (productName != null)
+			builder.append("Product Name: ").append(productName).append('\n');
+		if (productVendor != null)
+			builder.append("Product Vendor: ").append(productVendor).append('\n');
+		if (productVersions != null)
+			builder.append("Product Versions: ").append(productVersions).append('\n');
+		if (customerId != null)
+			builder.append("Customer Id: ").append(customerId).append('\n');
+		if (customerName != null)
+			builder.append("Customer Name: ").append(customerName).append('\n');
+		if (signatureAsString != null)
+			builder.append("Signature: ").append(signatureAsString).append('\n');
+
 		return builder.toString();
 	}
 
