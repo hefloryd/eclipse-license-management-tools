@@ -28,7 +28,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.utils.StringUtils;
 import org.eclipse.tycho.ArtifactType;
 import org.eclipse.tycho.core.utils.TychoProjectUtils;
 
@@ -95,11 +94,22 @@ public class InjectLicensingMojo extends AbstractMojo {
 		requiredList.remove("org.eclipse.licensing.base");
 		requiredList.add("org.apache.commons.codec");
 		requiredList.add("org.eclipse.osgi");
-		String newRequiredBundles = StringUtils.join(requiredList.toArray(),
-				",");
+		String newRequiredBundles = join(requiredList, ",");
 		manifest.getMainAttributes().putValue("Require-Bundle",
 				newRequiredBundles);
 		manifest.write(new FileOutputStream(manifestFile));
+	}
+
+	private String join(List<String> list, String separator) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+			String required = list.get(i);
+			builder.append(required);
+			if (i < list.size() - 1) {
+				builder.append(separator);
+			}
+		}
+		return builder.toString();
 	}
 
 }
